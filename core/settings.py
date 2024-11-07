@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_elasticsearch_dsl",
     "rest_framework",
-    "blog"
+    "blog",
+    "search"
 ]
 
 MIDDLEWARE = [
@@ -79,6 +81,18 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
+
+# Elasticsearch
+# https://django-elasticsearch-dsl.readthedocs.io/en/latest/settings.html
+
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": "https://localhost:9200",
+        # "http_auth": ("elastic", "YOUR_PASSWORD"),
+        # "ca_certs": "PATH_TO_http_ca.crt",
     }
 }
 
