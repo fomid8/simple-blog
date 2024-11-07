@@ -6,16 +6,26 @@ from .models import *
 from .serializers import *
 
 
-class UserView(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
+class UserListCreateView(generics.ListCreateAPIView):
     queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-class CategoryView(viewsets.ModelViewSet):
-    serializer_class = CategorySerializer
+class CategoryListCreateView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
+class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
-class ArticleView(viewsets.ModelViewSet):
-    serializer_class = ArticleSerializer
+class ArticleListCreateView(generics.ListCreateAPIView):
     queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+class ArticleRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
