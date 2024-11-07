@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework import mixins
 from .models import *
@@ -10,11 +11,11 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryView(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
-class ArticleViewSet(viewsets.ModelViewSet):
+class ArticleView(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
