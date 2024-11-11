@@ -1,22 +1,20 @@
 from rest_framework import serializers
-from .models import *
+# from .models import *
+# blog_project/blog/serializers.py
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ("id", "username", "first_name", "last_name")
+class UserSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
 
+class CategorySerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255)
+    description = serializers.CharField()
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = "__all__"
-
-
-class ArticleSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
-    categories = CategorySerializer(many=True)
-
-    class Meta:
-        model = Article
-        fields = "__all__"
+class ArticleSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=255)
+    author = UserSerializer(many= True)
+    category = CategorySerializer(many= True)
+    content = serializers.CharField()
+    created_at = serializers.DateField()
