@@ -66,9 +66,7 @@ class SearchArticles(PaginatedElasticSearchAPIView):
                 "multi_match", query=query,
                 fields=[
                     "title",
-                    "author",
-                    "type",
-                    "content"
+                    "category"
                 ], fuzziness="auto")
     
     

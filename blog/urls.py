@@ -2,9 +2,9 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('users/', UserViewSet.as_view({'get': 'list', 'post': 'create'}), name='user-list'),
-    path('categories/', CategoryViewSet.as_view({'get': 'list', 'post': 'create'}), name='category-list'),
-    path('articles/', ArticleViewSet.as_view({'get': 'list', 'post': 'create'}), name='article-list'),
+    path('users/', UserView.as_view(), name='user-list'),
+    path('categories/', CategoryView.as_view(), name='category-list'),
+    path('articles/', ArticleView.as_view(), name='article-list'),
 ]
 
 # urlpatterns = [

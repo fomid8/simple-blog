@@ -2,16 +2,15 @@ from django.contrib.auth.models import User
 from django_elasticsearch_dsl import Document, fields, Text, Date, Keyword, Nested
 from django_elasticsearch_dsl.registries import registry
 from .models import *
-import datetime
+from datetime import datetime 
 
 
 @registry.register_document
 class UserDocument(Document):
-    id = Keyword(required=True)
     # id = fields.IntegerField()
-    username = Text()
-    first_name = Text()
-    last_name = Text()
+    username = fields.TextField()
+    first_name = fields.TextField()
+    last_name = fields.TextField()
 
     class Index:
         name = 'users'
@@ -19,28 +18,34 @@ class UserDocument(Document):
     class Django:
         model = User
 
+    def save(self, **kwargs):
+        return super().save(**kwargs)
+
 # UserDocument.init()
 
 @registry.register_document
 class CategoryDocument(Document):
-    name = Text()
-    description = Text()
+    name = fields.TextField()
+    description = fields.TextField()
 
     class Index:
         name = 'categories' 
 
     class Django:
         model = Category 
+    
+    def save(self, **kwargs):
+        return super().save(**kwargs)
 
 # CategoryDocument.init()
 
 @registry.register_document
 class ArticleDocument(Document):
-    title = Text()
-    content = Text()
-    author = Nested(UserDocument)
-    category = Nested(CategoryDocument)
-    created_at = Date()
+    title = fields.TextField()
+    content = fields.TextField()
+    author = fields.TextField() 
+    category = fields.TextField() 
+    created_at = fields.DateField()
 
     class Index:
         name = 'articles'
@@ -49,8 +54,11 @@ class ArticleDocument(Document):
         model = Article
 
     def save(self, **kwargs):
-        self.created_at = self.created_at or datetime.now()
+        if not self.created_at:
+            self.created_at = datetime.now()
         return super().save(**kwargs)
+
+
 
 
 # @registry.register_document
