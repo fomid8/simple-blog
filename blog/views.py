@@ -1,12 +1,11 @@
-from django.shortcuts import render
-from rest_framework import generics
+# from django.shortcuts import render
 from rest_framework import viewsets, views, status
 from rest_framework.response import Response
 # from rest_framework import mixins
 # from .models import *
 from .documents import *
 from .serializers import *
-from elasticsearch_dsl import Q, Search
+# from elasticsearch_dsl import Q, Search
 
 
 class UserView(views.APIView):
@@ -19,10 +18,8 @@ class UserView(views.APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        valid_data = serializer.validated_data
-        user = UserDocument(**valid_data)
-        user.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        user = serializer.create(serializer.validated_data)
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
 
 
 class UserDetailView(views.APIView):
@@ -40,14 +37,8 @@ class UserDetailView(views.APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        valid_data = serializer.validated_data
-        # user.username = valid_data['username']
-        # user.first_name = valid_data['first_name']
-        # user.last_name = valid_data['last_name']
-        for field, value in valid_data.items():
-            setattr(user, field, value)
-        user.save()
-        return Response(serializer.data)
+        updated_user = serializer.update(user, serializer.validated_data)
+        return Response(UserSerializer(updated_user).data)
 
     def delete(self, request, pk):
         user = UserDocument.get(id=pk, ignore=404)
@@ -67,10 +58,8 @@ class CategoryView(views.APIView):
     def post(self, request):
         serializer = CategorySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        valid_data = serializer.validated_data
-        category = CategoryDocument(**valid_data)
-        category.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        category = serializer.create(serializer.validated_data)
+        return Response(CategorySerializer(category).date, status=status.HTTP_201_CREATED)
 
 
 class CategoryDetailView(views.APIView):
@@ -87,11 +76,8 @@ class CategoryDetailView(views.APIView):
             return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = CategorySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        valid_data = serializer.validated_data
-        category.name = valid_data['name']
-        category.description = valid_data['description']
-        category.save()
-        return Response(serializer.data)
+        updated_category = serializer.update(category, serializer.validated_data)
+        return Response(CategorySerializer(updated_category).data)
 
     def delete(self, request, pk):
         category = CategoryDocument.get(id=pk, ignore=404)
@@ -113,10 +99,8 @@ class ArticleView(views.APIView):
     def post(self, request):
         serializer = ArticleSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        valid_data = serializer.validated_data
-        article = ArticleDocument(**valid_data)
-        article.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        article = serializer.create(serializer.validated_data)
+        return Response(ArticleSerializer(article).data, status=status.HTTP_201_CREATED)
 
 
 class ArticleDetailView(views.APIView):
@@ -138,12 +122,10 @@ class ArticleDetailView(views.APIView):
             return Response({"error": "Article not found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = ArticleSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        valid_data = serializer.validated_data
-        for field, value in valid_data.items():
-            setattr(article, field, value)
+        updated_article = serializer.update(article, serializer.validated_data)
         # article.created_at = datetime.now().date()
-        article.save()
-        return Response(serializer.data)
+        return Response(ArticleSerializer(updated_article).data)
+
 
     def delete(self, request, pk):
         article = ArticleDocument.get(id=pk, ignore=404)
@@ -152,31 +134,6 @@ class ArticleDetailView(views.APIView):
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
-# class UserListCreateView(generics.ListCreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
-# class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
-# class CategoryListCreateView(generics.ListCreateAPIView):
-#     queryset = Category.objects.all()
-#     serializer_class = CategorySerializer
-
-# class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Category.objects.all()
-#     serializer_class = CategorySerializer
-
-# class ArticleListCreateView(generics.ListCreateAPIView):
-#     queryset = Article.objects.all()
-#     serializer_class = ArticleSerializer
-
-# class ArticleRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Article.objects.all()
-#     serializer_class = ArticleSerializer
-
 
 
 

@@ -57,39 +57,3 @@ class ArticleDocument(Document):
         if not self.created_at:
             self.created_at = datetime.now()
         return super().save(**kwargs)
-
-
-
-
-# @registry.register_document
-# class ArticleDocument(Document):
-#     author = fields.ObjectField(properties={
-#         "id": fields.IntegerField(),
-#         "first_name": fields.TextField(),
-#         "last_name": fields.TextField(),
-#         "username": fields.TextField(),
-#     })
-#     categories = fields.ObjectField(properties={
-#         "id": fields.IntegerField(),
-#         "name": fields.TextField(),
-#         "description": fields.TextField(),
-#     })
-#     type = fields.TextField(attr="type_to_string")
-
-#     class Index:
-#         name = "articles"
-#         settings = {
-#             "number_of_shards": 1,
-#             "number_of_replicas": 0,
-#         }
-
-#     class Django:
-#         model = Article
-#         fields = [
-#             "title",
-#             "content",
-#             "created_datetime",
-#             "updated_datetime",
-#         ]
-
-

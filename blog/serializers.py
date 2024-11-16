@@ -5,9 +5,9 @@ from .documents import *
 
 class UserSerializer(serializers.Serializer):
     id = serializers.CharField(source='meta.id', read_only=True)  
-    username = serializers.CharField(max_length=200)
-    first_name = serializers.CharField(max_length=200)
-    last_name = serializers.CharField(max_length=200)
+    username = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
 
     def validate_username(self, value):
         if not value.isalnum():
@@ -25,6 +25,19 @@ class UserSerializer(serializers.Serializer):
         if not value.isalpha():
             raise serializers.ValidationError("فقط باید شامل حروف باشد.")
         return value
+    
+    def create(self, validated_data):
+        user = UserDocument(**validated_data)
+        user.save()
+        return user
+        # return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # return super().update(instance, validated_data)
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.save()
+        return instance
 
 
 class CategorySerializer(serializers.Serializer):
@@ -41,6 +54,17 @@ class CategorySerializer(serializers.Serializer):
         if len(value) < 10:
             raise serializers.ValidationError("باید حداقل 10 کاراکتر باشد.")
         return value
+    
+    def create(self, validated_data):
+        category = CategoryDocument(**validated_data)
+        category.save()
+        return category
+
+    def update(self, instance, validated_data):
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.save()
+        return instance
     
 
 class ArticleSerializer(serializers.Serializer):
@@ -60,3 +84,14 @@ class ArticleSerializer(serializers.Serializer):
         if len(value) < 10:
             raise serializers.ValidationError("باید حداقل 10 کاراکتر باشد.")
         return value
+    
+    def create(self, validated_data):
+        article = ArticleDocument(**validated_data)
+        article.save()
+        return article
+
+    def update(self, instance, validated_data):
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.save()
+        return instance
