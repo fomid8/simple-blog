@@ -4,7 +4,7 @@ from .documents import *
 # from .models import *
 
 class UserSerializer(serializers.Serializer):
-    # id = serializers.IntegerField()
+    id = serializers.CharField(source='meta.id', read_only=True)  
     username = serializers.CharField(max_length=200)
     first_name = serializers.CharField(max_length=200)
     last_name = serializers.CharField(max_length=200)
@@ -28,6 +28,7 @@ class UserSerializer(serializers.Serializer):
 
 
 class CategorySerializer(serializers.Serializer):
+    id = serializers.CharField(source='meta.id', read_only=True)  
     name = serializers.CharField(max_length=255)
     description = serializers.CharField()
 
@@ -43,6 +44,7 @@ class CategorySerializer(serializers.Serializer):
     
 
 class ArticleSerializer(serializers.Serializer):
+    id = serializers.CharField(source='meta.id', read_only=True)  
     title = serializers.CharField(max_length=255)
     author = serializers.CharField(max_length=255)
     category = serializers.CharField(max_length=255)
